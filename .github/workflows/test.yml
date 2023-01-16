@@ -1,0 +1,11 @@
+name: Investigate `github.event_name`
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: echo "$GITHUB_EVENT_NAME"
