@@ -3,6 +3,8 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: "33 * * * *" # 3 min from now
 jobs:
   test:
     runs-on: ubuntu-latest
