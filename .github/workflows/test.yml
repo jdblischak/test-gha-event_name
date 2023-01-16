@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Report event name
         run: echo "$GITHUB_EVENT_NAME"
+      - name: error in test2
+        run: stop
   issue:
     permissions:
       issues: write
