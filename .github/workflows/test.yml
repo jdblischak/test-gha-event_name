@@ -32,11 +32,25 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TZ: "America/New_York"
         run: |
-          gh issue list \
-            --label "bug" \
-            --state "open"
+          theDate="$(date '+%A (%Y-%m-%d)')"
+          theMessage="Scheduled build failed on $theDate in run [$GITHUB_RUN_ID]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
 
-          gh issue create \
-            --body "Scheduled build failed in run [$GITHUB_RUN_ID]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" \
+          existing=$(gh issue list \
             --label "bug" \
-            --title "Scheduled build failed on $(date '+%A (%Y-%m-%d)')"
+            --limit 1 \
+            --jq '.[].number' \
+            --json "number" \
+            --state "open")
+
+          if [[ -z "$existing" ]]
+          then
+            # open new issue
+            gh issue create \
+              --body "$theMessage" \
+              --label "bug" \
+              --title "Scheduled build failed on $theDate"
+          else
+            # comment on existing issue
+            gh issue comment "$existing" \
+              --body "$theMessage"
+          fi
