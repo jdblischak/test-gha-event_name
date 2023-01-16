@@ -11,14 +11,14 @@ jobs:
     steps:
       - name: Report event name
         run: echo "$GITHUB_EVENT_NAME"
+      - name: error in test1
+        run: stop
   test2:
     runs-on: ubuntu-latest
     needs: test1
     steps:
       - name: Report event name
         run: echo "$GITHUB_EVENT_NAME"
-      - name: error in test2
-        run: stop
   issue:
     permissions:
       issues: write
